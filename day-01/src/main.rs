@@ -42,6 +42,35 @@ impl Dial {
         }
     }
 
+    #[allow(non_snake_case)]
+    pub fn method_0x434C49434B(&mut self, rotation: Rotation) {
+        // FIXME: naive solution
+        match rotation {
+            Rotation::Left(count) => {
+                for _ in 0..count {
+                    if self.value == 0 {
+                        self.zeroes += 1;
+                        self.value = 99;
+                    } else {
+                        self.value -= 1;
+                    }
+                }
+            }
+            Rotation::Right(count) => {
+                for _ in 0..count {
+                    if self.value == 0 {
+                        self.zeroes += 1;
+                        self.value += 1;
+                    } else if self.value == 99 {
+                        self.value = 0;
+                    } else {
+                        self.value += 1;
+                    }
+                }
+            }
+        }
+    }
+
     pub fn zeroes(&self) -> usize {
         self.zeroes
     }
@@ -71,8 +100,12 @@ fn part1(data: &ParsedData) -> usize {
     dial.zeroes()
 }
 
-fn part2(_data: &ParsedData) -> usize {
-    0
+fn part2(data: &ParsedData) -> usize {
+    let mut dial = Dial::new();
+    for &rotation in data {
+        dial.method_0x434C49434B(rotation);
+    }
+    dial.zeroes()
 }
 
 #[cfg(test)]
@@ -101,7 +134,7 @@ L82
     fn part2() {
         let parsed = crate::parse(INPUT);
         let value = crate::part2(&parsed);
-        let expected = 0;
+        let expected = 6;
         assert_eq!(value, expected);
     }
 }
