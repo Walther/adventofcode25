@@ -1,0 +1,9 @@
+[workspace]
+resolver = "2"
+members = ["day-*", "shared"]
+
+[workspace.lints.clippy]
+all = "deny"
+pedantic = "deny"
+unwrap_used = "deny"
+match_bool = { level = "allow", priority = 1 }
